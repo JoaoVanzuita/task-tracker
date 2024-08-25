@@ -3,6 +3,19 @@ const readline = require('node:readline');
 const { stdin: input, stdout: output } = require('node:process')
 const rl = readline.createInterface({ input, output })
 
+const commandMap = {
+  add,
+  list,
+  update
+}
+
+const listQueries = [
+  'done',
+  'todo',
+  'in-progress',
+  null
+]
+
 function getTaskDescription(args) {
 
   const hasTwoQuotes = args.match(/"/g).length == 2
@@ -19,7 +32,7 @@ function getTaskId(args) {
 
   const taskId = args.split(' ')[0]
 
-  if(!typeof taskId == 'number'){
+  if (!typeof taskId == 'number') {
     console.log('Argumento inválido')
     return
   }
@@ -36,11 +49,6 @@ function add(args) {
   console.log(taskDescription)
 }
 
-function list() {
-  console.log('Executando "list"')
-
-}
-
 function update(args) {
 
   console.log('Executando "update"')
@@ -53,10 +61,17 @@ function update(args) {
   console.log(taskDescription)
 }
 
-const commandMap = {
-  add,
-  list,
-  update
+function list(args) {
+  const query = args
+
+  console.log('Executando "list"')
+
+  if (!listQueries.includes(query)) {
+    console.log('Argumento inválido')
+    return
+  }
+
+  console.log(`List ${query ? query : 'all'} tasks`)
 }
 
 rl.on('line', input => {
@@ -72,7 +87,7 @@ rl.on('line', input => {
   const indexArgsStart = input.indexOf(' ', input.indexOf(' ') + 1)
   let args = null
 
-  if(indexArgsStart > 0){
+  if (indexArgsStart > 0) {
     args = input.substring(indexArgsStart).trim()
   }
 
