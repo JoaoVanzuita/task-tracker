@@ -4,9 +4,12 @@ const { stdin: input, stdout: output } = require('node:process')
 const rl = readline.createInterface({ input, output })
 
 const commandMap = {
-  add,
-  list,
-  update
+  'add': addTask,
+  'list': listTasks,
+  'update': updateTask,
+  'delete': deleteTask,
+  'mark-done': markDoneTask,
+  'mark-in-progress': markInProgressTask
 }
 
 const listQueries = [
@@ -40,7 +43,7 @@ function getTaskId(args) {
   return taskId
 }
 
-function add(args) {
+function addTask(args) {
 
   console.log('executando "add"')
 
@@ -49,7 +52,7 @@ function add(args) {
   console.log(taskDescription)
 }
 
-function update(args) {
+function updateTask(args) {
 
   console.log('Executando "update"')
 
@@ -61,7 +64,7 @@ function update(args) {
   console.log(taskDescription)
 }
 
-function list(args) {
+function listTasks(args) {
   const query = args
 
   console.log('Executando "list"')
@@ -72,6 +75,30 @@ function list(args) {
   }
 
   console.log(`List ${query ? query : 'all'} tasks`)
+}
+
+function deleteTask(args) {
+  console.log('Executando "delete"')
+
+  const taskId = getTaskId(args)
+
+  console.log(taskId)
+}
+
+function markDoneTask(args) {
+  console.log('Executando markDone')
+
+  const taskId = getTaskId(args)
+
+  console.log(taskId)
+}
+
+function markInProgressTask(args) {
+  console.log('Executando markInProgress')
+
+  const taskId = getTaskId(args)
+
+  console.log(taskId)
 }
 
 rl.on('line', input => {
