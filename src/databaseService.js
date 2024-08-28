@@ -1,4 +1,4 @@
-const fs = require('fs')
+import fs from 'fs'
 const dbPath = './database.json'
 
 let database = {
@@ -7,7 +7,7 @@ let database = {
   updatedAt: null
 }
 
-function getLastId(database) {
+function getLastId() {
 
   return database.lastId ? database.lastId : database.tasks.length
 }
@@ -26,4 +26,20 @@ function writeDatabase(database) {
 function readDatabase() {
 
   return JSON.parse(fs.readFileSync(dbPath, { encoding: 'utf-8' }))
+}
+
+export function createTask(taskDescription) {
+  const newTask = {
+    id: getLastId() + 1,
+    description: taskDescription,
+    status: 'todo',
+    createdAt: Date.now(),
+    updatedAt: null
+  }
+
+  database.tasks.push(newTask)
+
+  writeDatabase(database)
+
+  return newTask.id
 }

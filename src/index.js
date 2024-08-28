@@ -1,7 +1,8 @@
-const readline = require('node:readline');
+import { createInterface } from 'node:readline'
+import { stdin as input, stdout as output } from 'node:process'
+import { createTask } from './databaseService.js'
 
-const { stdin: input, stdout: output } = require('node:process')
-const rl = readline.createInterface({ input, output })
+const rl = createInterface({ input, output })
 
 const commandMap = {
   'add': addTask,
@@ -49,7 +50,9 @@ function addTask(args) {
 
   const taskDescription = getTaskDescription(args)
 
-  console.log(taskDescription)
+  const newTaskId = createTask(taskDescription)
+
+  console.log(`Task added successfully (ID: ${newTaskId})`)
 }
 
 function updateTask(args) {
