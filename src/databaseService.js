@@ -21,8 +21,6 @@ function writeDatabase(database) {
     lastId,
     updatedAt
   }), { encoding: 'utf-8' })
-
-  return lastId
 }
 
 function readDatabase() {
