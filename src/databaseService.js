@@ -1,6 +1,8 @@
 import fs from 'fs'
 const dbPath = './database.json'
 
+//TODO: sync database before any operation
+
 let database = {
   tasks: [],
   lastId: 0,
@@ -52,4 +54,17 @@ export function createTask(taskDescription) {
   writeDatabase(database, true)
 
   return newTask.id
+}
+
+export function getTaskById(taskId) {
+
+  return database.tasks.find(task => task.id == taskId)
+}
+
+export function getAllTasks() {
+  return database.tasks
+}
+
+export function getTaskByStatus(taskStatus) {
+  return database.tasks.filter(task => task.status == taskStatus)
 }
