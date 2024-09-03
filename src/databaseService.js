@@ -7,19 +7,29 @@ let database = {
   updatedAt: null
 }
 
+//TODO: check if database.json is valid
+export function initDatabase() {
+
+  if (fs.existsSync(dbPath)) {
+    database = readDatabase()
+
+    return
+  }
+
+  writeDatabase(database)
+}
+
 function getLastId() {
 
   return database.lastId ? database.lastId : database.tasks.length
 }
 
-function writeDatabase(database) {
-  const updatedAt = Date.now()
-  const lastId = getLastId(database)
+function writeDatabase(database, isUpdate) {
 
   fs.writeFileSync(dbPath, JSON.stringify({
     tasks: database.tasks,
-    lastId,
-    updatedAt
+    lastId: getLastId(database),
+    updatedAt: isUpdate ? Date.now() : null
   }), { encoding: 'utf-8' })
 }
 
@@ -39,7 +49,7 @@ export function createTask(taskDescription) {
 
   database.tasks.push(newTask)
 
-  writeDatabase(database)
+  writeDatabase(database, true)
 
   return newTask.id
 }
