@@ -1,6 +1,6 @@
 import { createInterface } from 'node:readline'
 import { stdin as input, stdout as output } from 'node:process'
-import { createTask, getAllTasks, getTaskByStatus, initDatabase } from './databaseService.js'
+import { createTask, getAllTasks, getTaskByStatus, initDatabase, removeTask } from './databaseService.js'
 
 const rl = createInterface({ input, output })
 
@@ -97,7 +97,7 @@ function deleteTask(args) {
 
   const taskId = getTaskId(args)
 
-  console.log(taskId)
+  removeTask(taskId)
 }
 
 function markDoneTask(args) {

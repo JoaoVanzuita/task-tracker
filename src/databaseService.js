@@ -13,24 +13,19 @@ let database = {
 export function initDatabase() {
 
   if (fs.existsSync(dbPath)) {
-    database = readDatabase()
 
+    database = readDatabase()
     return
   }
 
   writeDatabase(database)
 }
 
-function getLastId() {
-
-  return database.lastId ? database.lastId : database.tasks.length
-}
-
 function writeDatabase(database, isUpdate) {
 
   fs.writeFileSync(dbPath, JSON.stringify({
     tasks: database.tasks,
-    lastId: getLastId(database),
+    lastId: database.lastId,
     updatedAt: isUpdate ? Date.now() : null
   }), { encoding: 'utf-8' })
 }
@@ -41,8 +36,9 @@ function readDatabase() {
 }
 
 export function createTask(taskDescription) {
+
   const newTask = {
-    id: getLastId() + 1,
+    id: database.lastId + 1,
     description: taskDescription,
     status: 'todo',
     createdAt: Date.now(),
@@ -50,6 +46,8 @@ export function createTask(taskDescription) {
   }
 
   database.tasks.push(newTask)
+
+  database.lastId += 1
 
   writeDatabase(database, true)
 
@@ -67,4 +65,11 @@ export function getAllTasks() {
 
 export function getTaskByStatus(taskStatus) {
   return database.tasks.filter(task => task.status == taskStatus)
+}
+
+export function removeTask(taskId) {
+
+  database.tasks = database.tasks.filter(task => task.id != taskId)
+
+  writeDatabase(database, true)
 }
