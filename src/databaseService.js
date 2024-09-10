@@ -67,6 +67,20 @@ export function getTaskByStatus(taskStatus) {
   return database.tasks.filter(task => task.status == taskStatus)
 }
 
+export function updateTaskDescription(id, description) {
+
+  let task = getTaskById(id)
+
+  task.description = description
+  task.updatedAt = Date.now()
+
+  const taskIndex = database.tasks.findIndex(task => task.id == id)
+
+  database.tasks[taskIndex] = task
+
+  writeDatabase(database, true)
+}
+
 export function removeTask(taskId) {
 
   database.tasks = database.tasks.filter(task => task.id != taskId)
