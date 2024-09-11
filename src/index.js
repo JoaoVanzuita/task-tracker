@@ -1,6 +1,6 @@
 import { createInterface } from 'node:readline'
 import { stdin as input, stdout as output } from 'node:process'
-import { createTask, getAllTasks, getTaskByStatus, initDatabase, removeTask, updateTaskDescription } from './databaseService.js'
+import { createTask, getAllTasks, getTaskByStatus, initDatabase, removeTask, updateTaskDescription, updateTaskStatus } from './databaseService.js'
 
 const rl = createInterface({ input, output })
 
@@ -104,7 +104,7 @@ function markDoneTask(args) {
 
   const taskId = getTaskId(args)
 
-  console.log(taskId)
+  updateTaskStatus(taskId, 'done')
 }
 
 function markInProgressTask(args) {
@@ -112,7 +112,7 @@ function markInProgressTask(args) {
 
   const taskId = getTaskId(args)
 
-  console.log(taskId)
+  updateTaskStatus(taskId, 'in-progress')
 }
 
 rl.on('line', input => {
