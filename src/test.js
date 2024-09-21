@@ -140,17 +140,25 @@ function deleteSuccess() {
   }
 }
 
-function runTests() {
-  addSucess()
-  updateSuccess()
-  listSuccess()
-  markInProgressSuccess()
-  markDoneSuccess()
-  deleteSuccess()
+const tests = [
+  () => addSucess(),
+  () => updateSuccess(),
+  () => listSuccess(),
+  () => markInProgressSuccess(),
+  () => markDoneSuccess(),
+  () => deleteSuccess(),
+]
+
+const runTests = async () => {
+  for (let index = 0; index < tests.length; index++) {
+    await new Promise(resolve => setTimeout(() => {
+      tests[index]()
+      resolve()
+    }, 50))
+  }
 }
 
-runTests()
-
+await runTests()
 
 console.log(`
   \x1b[34m====== Report ======
