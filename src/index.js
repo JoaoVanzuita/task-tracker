@@ -2,7 +2,7 @@ import { createInterface } from 'node:readline'
 import { stdin as input, stdout as output } from 'node:process'
 import { createTask, getAllTasks, getTaskByStatus, initDatabase, removeTask, updateTaskDescription, updateTaskStatus } from './databaseService.js'
 
-const rl = createInterface({ input, output })
+export const rl = createInterface({ input, output })
 
 initDatabase()
 
@@ -48,7 +48,6 @@ function getTaskId(args) {
 
 function addTask(args) {
 
-  console.log('executando "add"')
 
   const taskDescription = getTaskDescription(args)
 
@@ -59,7 +58,6 @@ function addTask(args) {
 
 function updateTask(args) {
 
-  console.log('Executando "update"')
 
   const taskId = getTaskId(args)
 
@@ -71,7 +69,6 @@ function updateTask(args) {
 function listTasks(args) {
   const query = args
 
-  console.log('Executando "list"')
 
   if (!listQueries.includes(query)) {
     console.log('Argumento inválido')
@@ -92,7 +89,6 @@ function listTasks(args) {
 }
 
 function deleteTask(args) {
-  console.log('Executando "delete"')
 
   const taskId = getTaskId(args)
 
@@ -100,7 +96,6 @@ function deleteTask(args) {
 }
 
 function markDoneTask(args) {
-  console.log('Executando markDone')
 
   const taskId = getTaskId(args)
 
@@ -108,34 +103,37 @@ function markDoneTask(args) {
 }
 
 function markInProgressTask(args) {
-  console.log('Executando markInProgress')
 
   const taskId = getTaskId(args)
 
   updateTaskStatus(taskId, 'in-progress')
 }
 
-rl.on('line', input => {
+export function start() {
+  rl.on('line', input => {
 
-  if (!input.startsWith('task-cli')) {
-    return
-  }
+    if (!input.startsWith('task-cli') && !input.startsWith('>task-cli')) {
+      return
+    }
 
-  const command = input.split(' ')[1]
+    const command = input.split(' ')[1]
 
-  const func = commandMap[command]
+    const func = commandMap[command]
 
-  const indexArgsStart = input.indexOf(' ', input.indexOf(' ') + 1)
-  let args = null
+    const indexArgsStart = input.indexOf(' ', input.indexOf(' ') + 1)
+    let args = null
 
-  if (indexArgsStart > 0) {
-    args = input.substring(indexArgsStart).trim()
-  }
+    if (indexArgsStart > 0) {
+      args = input.substring(indexArgsStart).trim()
+    }
 
-  if (func) {
-    func(args)
-    return
-  }
+    if (func) {
+      func(args)
+      return
+    }
 
-  console.log('Comando não encontrado')
-})
+    console.log('Comando não encontrado')
+  })
+}
+
+// start()

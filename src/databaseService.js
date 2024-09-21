@@ -30,7 +30,7 @@ function writeDatabase(database, isUpdate) {
   }), { encoding: 'utf-8' })
 }
 
-function readDatabase() {
+export function readDatabase() {
 
   return JSON.parse(fs.readFileSync(dbPath, { encoding: 'utf-8' }))
 }
