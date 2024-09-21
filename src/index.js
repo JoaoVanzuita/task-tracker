@@ -67,6 +67,7 @@ function updateTask(args) {
 }
 
 function listTasks(args) {
+
   const query = args
 
 
@@ -85,7 +86,8 @@ function listTasks(args) {
     tasks = getAllTasks()
   }
 
-  console.log(tasks)
+  const result = JSON.stringify(tasks)
+  console.log(result)
 }
 
 function deleteTask(args) {
@@ -136,4 +138,4 @@ export function start() {
   })
 }
 
-// start()
+start()
